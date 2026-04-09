@@ -14,6 +14,7 @@ Central detection module responsible for:
 
 Scapy collects raw 802.11 frames at the byte level, allowing direct access to
 fields such as MAC addresses and frame subtypes.
+============================================================================
 """
 import time
 from collections import defaultdict
