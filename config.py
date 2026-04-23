@@ -24,20 +24,20 @@ class Config:
 
     def __init__(
         self,
-        iface="wlan1mon",
-        threshold=10,
-        time_window=5,
-        mqtt_enabled=False,
-        mqtt_host="localhost",
-        mqtt_port=1883,
-        mqtt_topic="deauth/alerts",
-        log_file="deauth_alerts.log"
+        iface=None,
+        threshold=None,
+        time_window=None,
+        mqtt_enabled=True,
+        mqtt_host=None,
+        mqtt_port=None,
+        mqtt_topic=None,
+        log_file=None,
     ):
-        self.iface          = iface
-        self.threshold      = threshold
-        self.time_window    = time_window
+        self.iface          = iface             or "wlan1mon"
+        self.threshold      = threshold         or 10
+        self.time_window    = time_window       or 5
         self.mqtt_enabled   = mqtt_enabled
-        self.mqtt_host      = mqtt_host
-        self.mqtt_port      = mqtt_port
-        self.mqtt_topic     = mqtt_topic
-        self.log_file       = log_file
+        self.mqtt_host      = mqtt_host         or "localhost"
+        self.mqtt_port      = mqtt_port         or 1883
+        self.mqtt_topic     = mqtt_topic        or "deauth/alerts"
+        self.log_file       = log_file          or "deauth_alerts.log"
