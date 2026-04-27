@@ -18,6 +18,7 @@ fields such as MAC addresses and frame subtypes.
 """
 import time
 from collections import defaultdict
+from logger import Logger
 
 from scapy.all import sniff
 from scapy.layers.dot11 import Dot11, Dot11Deauth
@@ -65,8 +66,7 @@ class DeauthDetector:
         #self.alert_manager = AlertManager(config)
 
         # Logger
-        # TODO: Implement Logger.
-        #self.logger = Logger(config.log_file)
+        self.logger = Logger(config.log_file)
 
     def start(self):
         """
@@ -136,11 +136,11 @@ class DeauthDetector:
         count = len(self.frame_counts[src_mac])
 
         # Debugging statement.
-        # print(
-        #     f"[FRAME] Deauth from {src_mac} | "
-        #     f"Count in window: {count}/{self.config.threshold} | "
-        #     f"Reason: {reason_code}"
-        # )
+        print(
+            f"[FRAME] Deauth from {src_mac} | "
+            f"Count in window: {count}/{self.config.threshold} | "
+            f"Reason: {reason_code}"
+        )
 
         # Check if the threshold has been crossed.
         if count >= self.config.threshold:
@@ -186,7 +186,7 @@ class DeauthDetector:
         #self.alert_manager.send(alert)
 
         # Write the alert to the log file.
-        #self.logger.log(alert)
+        self.logger.log(alert)
 
     def print_summary(self):
         """
