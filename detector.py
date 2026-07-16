@@ -17,10 +17,10 @@ fields such as MAC addresses and frame subtypes.
 ============================================================================
 """
 import time
-from collections import defaultdict
-from logger import Logger
-
-from scapy.all import sniff
+from collections        import defaultdict
+from logger             import Logger
+from alert_manager      import AlertManager
+from scapy.all          import sniff
 from scapy.layers.dot11 import Dot11, Dot11Deauth
 
 
@@ -62,8 +62,7 @@ class DeauthDetector:
         self.total_alerts_fired = 0
 
         # Alert manager (terminal + MQTT).
-        # TODO: Implement the Alert Manager.
-        #self.alert_manager = AlertManager(config)
+        self.alert_manager = AlertManager()
 
         # Logger
         self.logger = Logger(config.log_file)
@@ -183,7 +182,7 @@ class DeauthDetector:
         }
 
         # Send the alert through all configured output channels.
-        #self.alert_manager.send(alert)
+        self.alert_manager.send(alert)
 
         # Write the alert to the log file.
         self.logger.log(alert)

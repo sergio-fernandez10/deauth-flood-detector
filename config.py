@@ -3,6 +3,8 @@
 config.py — Centralized Configuration
 =============================================================================
 """
+import os
+
 
 class Config:
     """
@@ -27,7 +29,7 @@ class Config:
         iface=None,
         threshold=None,
         time_window=None,
-        mqtt_enabled=True,
+        mqtt_enabled=False,     # MQTT alerting disabled, possibly implement later.
         mqtt_host=None,
         mqtt_port=None,
         mqtt_topic=None,

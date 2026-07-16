@@ -90,17 +90,17 @@ class AlertManager:
 
     def __init__(
         self,
-        email_address: str = None,
+        email_address: str  = None,
         email_password: str = None,
         email_provider: str = None,
-        phone_number: str = None,
-        carrier: str = None,
+        phone_number: str   = None,
+        carrier: str        = None,
     ):
-        self.email_address  = email_address  or os.getenv("EMAIL_ADDRESS")
-        self.email_password = email_password or os.getenv("EMAIL_PASSWORD")
-        self.email_provider = (email_provider or os.getenv("EMAIL_PROVIDER", "")).lower()
-        self.phone_number   = phone_number   or os.getenv("PHONE_NUMBER")
-        self.carrier        = (carrier or os.getenv("CARRIER", "")).lower()
+        self.email_address  = email_address     or os.getenv("EMAIL_ADDRESS")
+        self.email_password = email_password    or os.getenv("EMAIL_PASSWORD")
+        self.email_provider = (email_provider   or os.getenv("EMAIL_PROVIDER", "")).lower()
+        self.phone_number   = phone_number      or os.getenv("PHONE_NUMBER")
+        self.carrier        = (carrier          or os.getenv("CARRIER", "")).lower()
 
         self._validate()
 
@@ -108,12 +108,7 @@ class AlertManager:
         self.gateway     = CARRIERS[self.carrier]
         self.digits      = "".join(filter(str.isdigit, self.phone_number))
 
-        logger.info(
-            "AlertManager ready | %s → %s@%s",
-            self.email_address,
-            self.digits,
-            self.gateway,
-        )
+        logger.info("AlertManager ready.")
 
     def _validate(self):
         missing = []
@@ -175,7 +170,7 @@ class AlertManager:
         msg = MIMEText(body)
         msg["From"]    = self.email_address
         msg["To"]      = to_address
-        msg["Subject"] = ""
+        msg["Subject"] = "Deauth Alert"
 
         try:
             with smtplib.SMTP(self.smtp_config["host"], self.smtp_config["port"]) as server:
@@ -202,6 +197,22 @@ class AlertManager:
         except Exception as e:
             logger.error("Unexpected error: %s", e)
             return False
+
+    def send(self, alert: dict) -> bool:
+        """
+        Adapter method for integration with detector.py.
+        Formats the alert dict into a readable SMS message.
+
+        :param alert: Alert dictionary with keys:
+                      mac, counter, window, reason_code.
+        """
+        message = (
+            f"Flood detected!\n"
+            f"MAC: {alert['mac']}\n"
+            f"Count: {alert['count']} frames in {alert['window']}s\n"
+            f"Reason Code: {alert['reason_code']}"
+        )
+        return self.send_alert(message)
 
 
 # ---------------------------------------------------------------------------

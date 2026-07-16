@@ -119,7 +119,7 @@ def main():
     print("=" * 60)
     print(f"   Interface   : {config.iface}")
     print(f"   Threshold   : {config.threshold} frames / {config.time_window}s window")
-    print(f"   MQTT        : Enabled ---> {config.mqtt_host}")
+    print(f"   MQTT        : {'Enabled -> ' + config.mqtt_host if config.mqtt_enabled else 'Disabled'}")
     print(f"   Log file    : {config.log_file}")
     print("=" * 60)
     print("   Listening for deauth frames...   (Ctrl+C to stop)\n")
