@@ -23,6 +23,14 @@ A Wi-Fi deauthentication flood detector for wireless networks, built in Python w
 
 This tool monitors 802.11 traffic in monitor mode and watches for deauthentication ("deauth") floods — a common Wi-Fi attack where an attacker repeatedly sends deauth frames to force clients off a network. It sniffs management frames, isolates deauthentication frames per source MAC address, and tracks how many arrive within a rolling time window. When one MAC address crosses a configurable threshold, it fires an alert, logs the event, and can notify you directly via SMS.
 
+## ⚠️ Legal & Ethical Use
+
+This repository includes `simulator.py`, a script that actively injects 802.11 deauthentication frames — the same technique used in real Wi-Fi deauth attacks.
+
+**Only run the simulator against networks and devices you own, or have explicit written permission to test.** Injecting deauth frames at a network you don't control or lack authorization for is illegal in most jurisdictions (e.g. under the U.S. Computer Fraud and Abuse Act and FCC regulations on intentional wireless interference) and can carry serious civil and criminal penalties, regardless of intent.
+
+The simulator is provided strictly for educational use and for testing this detector — for example, against your own phone's hotspot. If you're unsure whether you're authorized to test a given network, don't.
+
 ## Features
 
 * **Live 802.11 monitoring** — uses Scapy to sniff management frames on a monitor-mode wireless interface.
@@ -37,7 +45,7 @@ This tool monitors 802.11 traffic in monitor mode and watches for deauthenticati
 
 ## Requirements
 
-* Wireless adapter capable of monitor mode (developed and tested with an Alfa AWUS036ACM)
+* Detector: Raspberry Pi OS, with a wireless adapter capable of monitor mode (developed and tested with an Alfa AWUS036ACM)
 * A monitor-mode interface already enabled, e.g.:
   ```bash
   sudo airmon-ng start wlan1
@@ -81,7 +89,7 @@ sudo python3 main.py --iface wlan1mon --threshold 20 --window 3
 
 ## Testing / Demo
 
-`simulator.py` is a companion script that plays the "attacker" role for testing the detector — it crafts and injects 802.11 deauth frames so you can watch the detector fire in real time. Run the detector in one terminal and the simulator in another, on a network and devices you own or have explicit permission to test (e.g. your own phone hotspot).
+`simulator.py` is a companion script that plays the "attacker" role for testing the detector — it crafts and injects 802.11 deauth frames so you can watch the detector fire in real time. Run the detector in one terminal and the simulator in another. **See [Legal & Ethical Use](#️-legal--ethical-use) above before running this.**
 
 ```bash
 sudo python3 simulator.py --iface wlan0mon --target FF:FF:FF:FF:FF:FF --count 50
