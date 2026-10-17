@@ -4,7 +4,7 @@ A Wi-Fi deauthentication flood detector for wireless networks, built in Python w
 
 ## Team Members
 
-**Sergio**
+**Sergio Fernandez Donneys**
 
 * Monitor mode setup and configuration of the Alfa adapter.
 * Core Scapy frame capture and parsing.
@@ -65,7 +65,15 @@ To enable SMS alerts, run the interactive setup wizard once:
 python setup.py
 ```
 
-This configures `config.env` with your email provider, carrier, and phone number, and sends a test SMS to confirm everything works. Alerts can also be configured manually by editing `config.env` directly.
+This configures `config.env` with your email provider, carrier, and phone number, and sends a test SMS to confirm everything works.
+
+To configure manually instead, copy the template and fill it in:
+
+```bash
+cp config.env.example config.env
+```
+
+`config.env` is git-ignored, so your email password and phone number stay on your machine and are never committed.
 
 ## Usage
 
@@ -108,3 +116,7 @@ sudo python3 simulator.py --iface wlan0mon --target FF:FF:FF:FF:FF:FF --count 50
 ## Project Status
 
 **In development.** Core detection, logging, and SMS alerting are functional and connected end-to-end. MQTT alert publishing is defined in configuration but not yet wired into the alert pipeline.
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
